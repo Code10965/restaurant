@@ -8,9 +8,6 @@ print()
 print("<TITLE>CGI script output</TITLE>")
 selected_neighborhood = str(form["neighborhood"].value)
 
-# selected neighborhood
-#selected_neighborhood = "Kreuzberg"
-
 # import the python library for SQLite 
 import sqlite3
 
@@ -20,14 +17,15 @@ db_connection = sqlite3.connect('restaurants.db')
 # create a database cursor object, which allows us to perform SQL on the database. 
 db_cursor = db_connection.cursor()
 
-# run a first query 
+# run a query combining restaurants with neighborhood
 db_cursor.execute("SELECT restaurants.NAME, neighborhoods.NAME from restaurants INNER JOIN neighborhoods on restaurants.NEIGHBORHOOD_ID=neighborhoods.ID")
 
 # store the result in a local variable. 
-# this will be a list of tuples, where each tuple represents a row in the table
 list_restaurants = db_cursor.fetchall()
 
+# convert list of tuple into dictionary
 dict_restaurant=dict(list_restaurants)
+
 list_of_neighborhood =[]
 
 print("""
@@ -42,7 +40,6 @@ print("""
 for key, value in dict_restaurant.items():
     if value == selected_neighborhood:
         print(key)
-print("""<br>""")
 print("""
     </h2>   
     </center>
