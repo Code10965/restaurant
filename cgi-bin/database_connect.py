@@ -8,6 +8,15 @@ print()
 print("<TITLE>CGI script output</TITLE>")
 selected_neighborhood = str(form["neighborhood"].value)
 
+### definition of function for creating a list of strings in html
+def print_ul(elements):
+    print("<ul>")
+    for element in elements:
+        ul= "<li>"+str(element)+"</li>"
+        print(ul)
+    print("</ul>")
+
+
 # import the python library for SQLite 
 import sqlite3
 
@@ -26,22 +35,23 @@ list_restaurants = db_cursor.fetchall()
 # convert list of tuple into dictionary
 dict_restaurant=dict(list_restaurants)
 
+
 list_of_neighborhood =[]
 
 print("""
     <!DOCTYPE html>
-    <center>
     <h1>""")  
 print(f"These are restaurants in {selected_neighborhood.title()}:")
 print("""
     </h1>
     <h2>""")
-
+final_list = []
 for key, value in dict_restaurant.items():
     if value == selected_neighborhood:
-        print(key)
+        final_list.append(key)
+# calling the function
+print_ul(final_list)
 print("""
     </h2>   
-    </center>
     </html>
     """)  
